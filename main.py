@@ -348,7 +348,7 @@ if __name__ == "__main__":
         skip_previously_forecasted_questions=True,
          llms={  # choose your model names or GeneralLlm llms here, otherwise defaults will be chosen for you
              "default": GeneralLlm(
-                 model="gemini-2.5-pro-preview",
+                 model="openrouter/google/gemini-2.5-pro-preview",
                  temperature=0.3,
                  timeout=40,
                  allowed_tries=2,
