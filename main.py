@@ -81,9 +81,23 @@ class TemplateForecaster(ForecastBot):
     ) -> str:
         prompt = clean_indents(
             f"""
+            # You are an assistant to a superforecaster.
+            # The superforecaster will give you a question they intend to forecast on.
+            # To be a great assistant, you generate a concise but detailed rundown of the most relevant news, including if the question would resolve Yes or No based on current information.
+            # You do not produce forecasts yourself.
+            
             You are an assistant to a superforecaster.
             The superforecaster will give you a question they intend to forecast on.
-            To be a great assistant, you generate a concise but detailed rundown of the most relevant news, including if the question would resolve Yes or No based on current information.
+
+            Your job is to generate a concise but detailed summary of the most relevant and recent information, including:
+            - Key events, entities, or developments related to the question
+            - Relevant historical context or trends
+            - Current news reports, announcements, or data that may influence the outcome - if you don't initially find recent news, that is surprising so double check
+            - Arguments or evidence that support each possible resolution (e.g. Yes or No)
+            - Any uncertainty, missing information, or upcoming events that could affect the resolution
+
+            If the question could currently be resolved based on available information, say so clearly, with supporting evidence.
+
             You do not produce forecasts yourself.
 
             Question:
