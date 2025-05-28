@@ -93,7 +93,7 @@ class TemplateForecaster(ForecastBot):
         if use_open_router:
             model_name = "openrouter/perplexity/sonar-reasoning"
         else:
-            model_name = "perplexity/sonar-pro"  # perplexity/sonar-reasoning and perplexity/sonar are cheaper, but do only 1 search
+            model_name = "perplexity/sonar-reasoning-pro"  # perplexity/sonar-reasoning and perplexity/sonar are cheaper, but do only 1 search
         model = GeneralLlm(
             model=model_name,
             temperature=0.1,
