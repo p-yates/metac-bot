@@ -92,9 +92,14 @@ class TemplateForecaster(ForecastBot):
             Your job is to generate a concise but detailed summary of the most relevant and recent information, including:
             - Key events, entities, or developments related to the question
             - Relevant historical context or trends
-            - Current news reports, announcements, or data that may influence the outcome - if you don't initially find recent news, that is surprising so double check
-            - Arguments or evidence that support each possible resolution (e.g. Yes or No)
+            - Current news reports, announcements, or data that may influence the outcome
             - Any uncertainty, missing information, or upcoming events that could affect the resolution
+            - Arguments or evidence that support each possible resolution (e.g. Yes or No)
+
+            **If you don't find recent news, that is surprising so double check**
+
+            Check for similar questions that have been asked on prediction markets, e.g. www.polymarket.com, www.kalshi.com, www.predictit.org/markets, or www.metaculus.com/questions/
+            Note the similarities and differences between these markets (if they exist) and the question asked, e.g. differing resolution dates or condidtions.
 
             If the question could currently be resolved based on available information, say so clearly, with supporting evidence.
 
