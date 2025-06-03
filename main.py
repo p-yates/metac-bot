@@ -100,7 +100,6 @@ class TemplateForecaster(ForecastBot):
     ) -> str:
         prompt = clean_indents(
             f"""
-COMBINED_ENHANCED_RESEARCH_PROMPT = """
             You are a research assistant to a world-class superforecaster.
 
             The superforecaster will give you a forecasting question they intend to predict. Your job is to generate a comprehensive research report that will help them make the most accurate forecast possible.
