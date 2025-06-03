@@ -78,10 +78,6 @@ class TemplateForecaster(ForecastBot):
             perplexity_research = ""
             if os.getenv("PERPLEXITY_API_KEY"):
                 perplexity_research = await self._call_perplexity(question.question_text)
-            elif os.getenv("OPENROUTER_API_KEY"):
-                perplexity_research = await self._call_perplexity(
-                    question.question_text, use_open_router=True
-                )
                 
             # Combine the two research reports
             if perplexity_research.strip():
