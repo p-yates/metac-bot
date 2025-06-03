@@ -64,17 +64,40 @@ class TemplateForecaster(ForecastBot):
     async def run_research(self, question: MetaculusQuestion) -> str:
         async with self._concurrency_limiter:
             research = ""
-            if os.getenv("PERPLEXITY_API_KEY"):
-                research = await self._call_perplexity(question.question_text)
-            else:
-                logger.warning(
-                    f"No research provider found when processing question URL {question.page_url}. Will pass back empty string."
+
+            # First: AskNews research
+            if os.getenv("ASKNEWS_CLIENT_ID") and os.getenv("ASKNEWS_SECRET"):
+                asknews_research = await AskNewsSearcher().get_formatted_news_async(
+                    question.question_text
                 )
-                research = ""
-            logger.info(
-                f"Found Research for URL {question.page_url}:\n{research}"
-            )
+                if asknews_research.strip():
+                    research += asknews_research
+
+
+            # Second: Perplexity research
+            perplexity_research = ""
+            if os.getenv("PERPLEXITY_API_KEY"):
+                perplexity_research = await self._call_perplexity(question.question_text)
+            elif os.getenv("OPENROUTER_API_KEY"):
+                perplexity_research = await self._call_perplexity(
+                    question.question_text, use_open_router=True
+                )
+                
+            # Combine the two research reports
+            if perplexity_research.strip():
+                if research:  # If we got AskNews research
+                    research += "\n\n" + "="*50 + "\n"
+                    research += "# START OF SECOND RESEARCHER'S REPORT\n"
+                    research += "="*50 + "\n\n"
+                research += perplexity_research
+        
+             # Fail fast if both research sources failed
+            if not research.strip():
+                raise Exception(f"Both AskNews and Perplexity research failed for question {question.page_url}. Script will retry in 30 minutes.")
+        
+            logger.info(f"Found Research for URL {question.page_url}:\n{research}")
             return research
+
 
     async def _call_perplexity(
         self, question: str, use_open_router: bool = False
