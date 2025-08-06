@@ -56,6 +56,10 @@ class FallTemplateBot2025(ForecastBot):
     In this example, you can change the prompts to be whatever you want since,
     structure_output uses an LLMto intelligently reformat the output into the needed structure.
 
+    By default (i.e. 'tournament' mode), when you run this script, it will forecast on any open questions for the
+    MiniBench and Seasonal AIB tournaments. If you want to forecast on only one or the other, you can remove one
+    of them from the 'tournament' mode code at the bottom of the file.
+
     You can experiment with what models work best with your bot by using the `llms` parameter when initializing the bot.
     You can initialize the bot with any number of models. For example,
     ```python
@@ -388,7 +392,7 @@ if __name__ == "__main__":
     )
 
     if run_mode == "tournament":
-        main_tournament_reports = asyncio.run(
+        seasonal_tournament_reports = asyncio.run(
             template_bot.forecast_on_tournament(
                 MetaculusApi.CURRENT_AI_COMPETITION_ID, return_exceptions=True
             )
@@ -398,7 +402,7 @@ if __name__ == "__main__":
                 MetaculusApi.CURRENT_MINIBENCH_ID, return_exceptions=True
             )
         )
-        forecast_reports = main_tournament_reports + minibench_reports
+        forecast_reports = seasonal_tournament_reports + minibench_reports
     elif run_mode == "metaculus_cup":
         template_bot.skip_previously_forecasted_questions = False
         forecast_reports = asyncio.run(
