@@ -16,7 +16,7 @@ from asknews_sdk import AskNewsSDK
 ######################### CONSTANTS #########################
 # Constants
 SUBMIT_PREDICTION = True  # set to True to publish your predictions to Metaculus
-USE_EXAMPLE_QUESTIONS = False  # set to True to forecast example questions rather than the tournament questions
+USE_EXAMPLE_QUESTIONS = True  # set to True to forecast example questions rather than the tournament questions
 NUM_RUNS_PER_QUESTION = 5  # The median forecast is taken between NUM_RUNS_PER_QUESTION runs
 SKIP_PREVIOUSLY_FORECASTED_QUESTIONS = True
 
@@ -34,6 +34,7 @@ Q4_2024_AI_BENCHMARKING_ID = 32506
 Q1_2025_AI_BENCHMARKING_ID = 32627
 Q4_2024_QUARTERLY_CUP_ID = 3672
 Q1_2025_QUARTERLY_CUP_ID = 32630
+Q2_2025_AI_BENCHMARKING_ID = 32721 # I added
 AXC_2025_TOURNAMENT_ID = 32564
 GIVEWELL_ID = 3600
 RESPIRATORY_OUTLOOK_ID = 3411
@@ -200,7 +201,7 @@ CONCURRENT_REQUESTS_LIMIT = 5
 llm_rate_limiter = asyncio.Semaphore(CONCURRENT_REQUESTS_LIMIT)
 
 
-async def call_llm(prompt: str, model: str = "gpt-4o", temperature: float = 0.3) -> str:
+async def call_llm(prompt: str, model: str = "gpt-4o-mini", temperature: float = 0.3) -> str:
     """
     Makes a streaming completion request to OpenAI's API with concurrent request limiting.
     """
@@ -232,19 +233,21 @@ async def call_llm(prompt: str, model: str = "gpt-4o", temperature: float = 0.3)
 
 
 def run_research(question: str) -> str:
-    research = ""
-    if ASKNEWS_CLIENT_ID and ASKNEWS_SECRET:
-        research = call_asknews(question)
-    elif EXA_API_KEY:
-        research = call_exa_smart_searcher(question)
-    elif PERPLEXITY_API_KEY:
-        research = call_perplexity(question)
-    else:
-        research = "No research done"
-
+    research = call_perplexity(question)
     print(f"########################\nResearch Found:\n{research}\n########################")
-
     return research
+#    research = ""
+#    if ASKNEWS_CLIENT_ID and ASKNEWS_SECRET:
+#        research = call_asknews(question)
+#    elif EXA_API_KEY:
+#        research = call_exa_smart_searcher(question)
+#    elif PERPLEXITY_API_KEY:
+ #       research = call_perplexity(question)
+#    else:
+ #       research = "No research done"
+ #   print(f"########################\nResearch Found:\n{research}\n########################")
+
+  #  return research
 
 def call_perplexity(question: str) -> str:
     url = "https://api.perplexity.ai/chat/completions"
@@ -255,7 +258,7 @@ def call_perplexity(question: str) -> str:
         "content-type": "application/json",
     }
     payload = {
-        "model": "llama-3.1-sonar-huge-128k-online",
+        "model": "sonar",
         "messages": [
             {
                 "role": "system",  # this is a system prompt designed to guide the perplexity assistant
