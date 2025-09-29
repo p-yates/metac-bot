@@ -80,7 +80,7 @@ class FallTemplateBot2025(ForecastBot):
     Then you can access the model in custom functions like this:
     ```python
     research_strategy = self.get_llm("researcher", "model_name"
-    if research_strategy == "asknews/deep-research/low":
+    if research_strategy == "asknewsasknews/deep-research/low":
         ...
     # OR
     summarizer = await self.get_llm("summarizer", "model_name").invoke(prompt)
